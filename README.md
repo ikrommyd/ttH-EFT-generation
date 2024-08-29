@@ -11,7 +11,7 @@ interactive machine, e.g. [FNAL LPC](https://uscms.org/uscms_at_work/physics/com
 
 To start, please clone this repository in a directory that has sufficient quota for the tutorial (at least 50GB),
 ```bash
-git clone git@github.com:FNALLPC/cmseft.git
+git clone git@github.com:FNALLPC/ttH-EFT-generation.git
 ```
 
 ## Generation
@@ -24,7 +24,7 @@ For this exercise we will generate a $t\bar{t}$ semileptonic sample with one ext
 
 To start, from the main area of this repository, run
 ```bash
-cd cmseft/generation
+cd ttH-EFT-generation/generation
 . setup.sh
 ```
 this sets up the CMS [genproductions](https://github.com/cms-sw/genproductions) git repository
@@ -90,7 +90,7 @@ The event content of the flat trees is similar to the generator infomration in N
 but much faster generation time because the detector simulation and reconstruction is being skipped.
 
 We will generate a few events directly from the gridpack created in the previous step (no intermediate GEN file is needed!), and use the same pythia fragment as in the GEN step before.
-Make sure you are in `cmseft2023/generation/` and have a CMSSW environment set (e.g. run `. setup.sh` again to be sure).
+Make sure you are in `ttH-EFT-generation2023/generation/` and have a CMSSW environment set (e.g. run `. setup.sh` again to be sure).
 
 A cmsRun config file can be created
 
