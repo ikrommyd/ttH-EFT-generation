@@ -1,7 +1,6 @@
-# CMS EFT Workshop Hands-on tutorial
+# ttH EFT sample generation
 
-This is a companion repository for CMS EFT workshop at LPC tutorial.
-The tutorial is aimed at graduate students and other researchers who are interested in including an EFT interpretation in their analysis.
+This is my attempt at properly generating ttH EFT samples where the Higgs decays to two photons.
 
 ## Setup
 
@@ -57,22 +56,22 @@ tar -xvzf SMEFTsim_topU3l_MwScheme_UFO.tar.gz
 cd SMEFTsim_topU3l_MwScheme_UFO
 ```
 
-Create a folder “TT01j_tutorial”
-Take a look at TT01j_tutorial_proc_card.dat and TT01j_tutorial_reweight_card.dat
+Create a folder “ttHtoGG_tutorial”
+Take a look at ttHtoGG_tutorial_proc_card.dat and ttHtoGG_tutorial_reweight_card.dat
 ```bash
-mkdir TT01j_tutorial
-cp $TUTORIALGEN/TT01j* TT01j_tutorial/
+mkdir ttHtoGG_tutorial
+cp $TUTORIALGEN/ttHtoGG* ttHtoGG_tutorial/
 ```
 Let's take a look at some diagrams
 ```bash
  cd $TUTORIALGEN/genproductions/bin/MadGraph5_aMCatNLO/
  eval `scram unsetenv -sh`
- ./diagram_generation.sh TT01j_tutorial addons/models/SMEFTsim_topU3l_MwScheme_UFO/TT01j_tutorial/
+ ./diagram_generation.sh ttHtoGG_tutorial addons/models/SMEFTsim_topU3l_MwScheme_UFO/ttHtoGG_tutorial/
 ```
 
 To run locally,
 ```bash
-./gridpack_generation.sh TT01j_tutorial addons/models/SMEFTsim_topU3l_MwScheme_UFO/TT01j_tutorial
+./gridpack_generation.sh ttHtoGG_tutorial addons/models/SMEFTsim_topU3l_MwScheme_UFO/ttHtoGG_tutorial
 ```
 
 <details>
@@ -80,88 +79,9 @@ To run locally,
 Condor gridpack generation works for lxplus (and LPC?) but may not work at your local cluster, depending on your cluster's batch setup. You could use CMS connect as well (link)
 
 ```bash
-nohup ./submit_cmsconnect_gridpack_generation.sh TT01j_tutorial addons/cards/SMEFTsim_topU3l_MwScheme_UFO/TT01j_tutorial > TT01j_tutorial.log
+nohup ./submit_cmsconnect_gridpack_generation.sh ttHtoGG_tutorial addons/cards/SMEFTsim_topU3l_MwScheme_UFO/ttHtoGG_tutorial > ttHtoGG_tutorial.log
 ```
 </details>
-
-### Generating EDM GEN files
-
-Exit the singularity container from the previous step. If you're running on an EL8 machine (e.g. `lxplus8.cern.ch` or `cmslpc-el8.fnal.gov`) you can run the following commands without a container.
-Navigate back to your EFT tutorial work directory.
-
-``` bash
-cd generation/
-pushd CMSSW_13_0_14/src && cmsenv && popd
-```
-
-Producing GEN files from the above gridpack is usually straight forward and similar to other CMS samples.
-We will use a fragment file that defines the settings that will be used for decays, parton shower and hadronization in pythia.
-For convenience, the gridpack defined in the fragment points to a validated copy at `/eos/uscms/store/user/dspitzba/TT01j_tutorial_slc7_amd64_gcc700_CMSSW_10_6_19_tarball.tar.xz`.
-
-You can change the path to the gridpack in the file in `cmseft/generation/CMSSW_13_0_14/src/Configuration/GenProduction/python/pythia_fragment.py`:
-
-``` python
-externalLHEProducer = cms.EDProducer("ExternalLHEProducer",
-    args = cms.vstring('/eos/uscms/store/user/dspitzba/TT01j_tutorial_slc7_amd64_gcc700_CMSSW_10_6_19_tarball.tar.xz'),
-    nEvents = cms.untracked.uint32(5000),
-    numberOfParameters = cms.uint32(1),
-    outputFile = cms.string('cmsgrid_final.lhe'),
-    scriptName = cms.FileInPath('GeneratorInterface/LHEInterface/data/run_generic_tarball_cvmfs.sh')
-)
-```
-If you're not running this tutorial at the LPC you can replace the path to point to your gridpack, or copy the gridpack somewhere convienent using
-
-``` bash
-xrdcp root://cmseos.fnal.gov//store/user//dspitzba/TT01j_tutorial_slc7_amd64_gcc700_CMSSW_10_6_19_tarball.tar.xz /A/B/C
-```
-
-For creating a cmsRun config file make sure you are in `cmseft2023/generation/` and have a CMSSW environment set.
-``` bash
-cmsDriver.py Configuration/GenProduction/python/pythia_fragment.py \
-    --mc \
-    --python_filename gen_cfg.py \
-    --eventcontent RAWSIM,LHE \
-    --datatier GEN,LHE \
-    --conditions 130X_mcRun3_2023_realistic_v14 \
-    --beamspot Realistic25ns13p6TeVEarly2023Collision \
-    --step LHE,GEN \
-    --nThreads 1 \
-    --geometry DB:Extended \
-    --era Run3 \
-    --customise Configuration/DataProcessing/Utils.addMonitoring \
-    --customise_commands "process.RandomNumberGeneratorService.externalLHEProducer.initialSeed=123" \
-    --fileout file:gen_123.root \
-    --no_exec -n 100
-```
-
-To actually create the GEN file just run
-
-``` bash
-cmsRun gen_cfg.py
-```
-
-<details>
-<summary>Using GEN samples to determine the qCut for jet matching</summary>
-This is an important topic for any sample that is generated with additional partons in the matrix element, not exclusively for EFT samples.
-The qCut is set in the pythia fragment.
-A good starting point is around the xqcut that is being set in the MG run_card.dat.
-
-Several GEN files with different qcut values have been prepared in `/eos/uscms/store/user/dspitzba/EFT/qcut*.root*`.
-You can look them up from anywhere with a grid certificate with
-
-``` bash
-xrdfs root://cmseos.fnal.gov/ ls /store/user/dspitzba/EFT/
-```
-
-You can plot differential jet rate plots:
-
-``` bash
-. setup_hist.sh
-python djr.py --input root://cmseos.fnal.gov//store/user/dspitzba/EFT/qcut30.root --output djr_qcut30.pdf
-```
-
-</details>
-
 
 ### Generating NanoGEN files
 
@@ -191,7 +111,7 @@ If we want to keep the original weights we can add them to the list of named wei
 
 ``` bash
 echo "named_weights = [" >> nanogen_cfg.py
-cat TT01j_tutorial_reweight_card.dat | grep launch | sed 's/launch --rwgt_name=/"/' | sed 's/$/",/' >> nanogen_cfg.py
+cat ttHtoGG_tutorial_reweight_card.dat | grep launch | sed 's/launch --rwgt_name=/"/' | sed 's/$/",/' >> nanogen_cfg.py
 echo -e "]\nprocess.genWeightsTable.namedWeightIDs = named_weights\nprocess.genWeightsTable.namedWeightLabels = named_weights" >> nanogen_cfg.py
 ```
 
