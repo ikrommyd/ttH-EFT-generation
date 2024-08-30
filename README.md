@@ -51,8 +51,10 @@ cp diagram_generation.sh genproductions/bin/MadGraph5_aMCatNLO/
 cd genproductions/bin/MadGraph5_aMCatNLO/
 mkdir -pv addons/models/
 cd addons/models/
-wget https://feynrules.irmp.ucl.ac.be/raw-attachment/wiki/SMEFT/SMEFTsim_U35_MwScheme_UFO.tar.gz
-tar -xvzf SMEFTsim_U35_MwScheme_UFO.tar.gz
+wget https://github.com/SMEFTsim/SMEFTsim/archive/refs/tags/v3.0.2.tar.gz
+tar -xvzf v3.0.2.tar.gz
+cp -r SMEFTsim-3.0.2/UFO_models/SMEFTsim_U35_MwScheme_UFO .
+rm -rf SMEFTsim-3.0.2 v3.0.2.tar.gz
 cd SMEFTsim_U35_MwScheme_UFO
 ```
 
