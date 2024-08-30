@@ -58,7 +58,7 @@ if [ -e $CARDSDIR/${name}_restrict_custom.dat ]; then
   cp $CARDSDIR/${name}_restrict_custom.dat ./Cards/restrict_custom.dat
   for MDDIR in ${MGBASEDIRORIG}/models/*/
   do
-      echo $CARDSDIR/${name}_restrict_custom.dat $MDDIR/restrict_custom.dat 
+      echo $CARDSDIR/${name}_restrict_custom.dat $MDDIR/restrict_custom.dat
       cp $CARDSDIR/${name}_restrict_custom.dat $MDDIR/restrict_custom.dat
   done
 fi
@@ -66,14 +66,14 @@ fi
 cp $CARDSDIR/${name}_proc_card.dat ${name}_proc_card.dat
 echo "display diagrams ./" >> ${name}_proc_card.dat
 
-${MGBASEDIRORIG}/bin/mg5_aMC ${name}_proc_card.dat
+python2 ${MGBASEDIRORIG}/bin/mg5_aMC ${name}_proc_card.dat
 
 # remove all the zero coefficients
 sed -e "s/NP\w*=0, //g" -e "s/, SMHLOOP=0//" -e "s/NP=1, //" -i *.eps
 
 PDFOUT="../${name}_diagrams"
 mkdir -p $PDFOUT
-for epsfile in *.eps 
+for epsfile in *.eps
 do
     ps2pdf $epsfile $PDFOUT/${epsfile%.*}.pdf
 done
