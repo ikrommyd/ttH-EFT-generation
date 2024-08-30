@@ -87,6 +87,14 @@ nohup ./submit_cmsconnect_gridpack_generation.sh ttHtoGG_tutorial addons/cards/S
 
 ### Generating NanoGEN files
 
+Exit the singularity container from the previous step. If you're running on an EL8 machine (e.g. `lxplus8.cern.ch` or `cmslpc-el8.fnal.gov`) you can run the following commands without a container.
+Navigate back to your EFT tutorial work directory.
+
+``` bash
+cd generation/
+pushd CMSSW_13_0_14/src && cmsenv && popd
+```
+
 NanoGEN is a very convenient format for exploratory studies.
 The event content of the flat trees is similar to the generator infomration in NanoAOD,
 but much faster generation time because the detector simulation and reconstruction is being skipped.
