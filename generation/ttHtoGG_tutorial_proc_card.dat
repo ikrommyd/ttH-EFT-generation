@@ -1,4 +1,4 @@
-import model SMEFTsim_U35_ MwScheme_UFO
+import model SMEFTsim_U35_MwScheme_UFO
 
 define p = g u c d s b u~ c~ d~ s~ b~
 define j = p
