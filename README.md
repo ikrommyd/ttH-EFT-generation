@@ -44,7 +44,7 @@ Alternative generators include SMEFT@NLO, Dim6Top, etc.
 ### Creating the gridpack
 We will start by creating a gridpack. Start in a fresh terminal window.
 
-Find the files under `genproductions/bin/MadGraph5_aMCatNLO`, Take a look at gridpack_generation.sh. Add a new model SMEFTsim_U35_MwScheme
+Find the files under `genproductions/bin/MadGraph5_aMCatNLO`, Take a look at gridpack_generation.sh. Add a new model SMEFTsim_topU3l_MwScheme
 ```bash
 export TUTORIALGEN=$(pwd)
 cp diagram_generation.sh genproductions/bin/MadGraph5_aMCatNLO/
@@ -53,9 +53,9 @@ mkdir -pv addons/models/
 cd addons/models/
 wget https://github.com/SMEFTsim/SMEFTsim/archive/refs/tags/v3.0.2.tar.gz
 tar -xvzf v3.0.2.tar.gz
-cp -r SMEFTsim-3.0.2/UFO_models/SMEFTsim_U35_MwScheme_UFO .
+cp -r SMEFTsim-3.0.2/UFO_models/SMEFTsim_topU3l_MwScheme_UFO .
 rm -rf SMEFTsim-3.0.2 v3.0.2.tar.gz
-cd SMEFTsim_U35_MwScheme_UFO
+cd SMEFTsim_topU3l_MwScheme_UFO
 ```
 
 Create a folder “ttHtoGG_tutorial”
@@ -68,12 +68,12 @@ Let's take a look at some diagrams
 ```bash
  cd $TUTORIALGEN/genproductions/bin/MadGraph5_aMCatNLO/
  eval `scram unsetenv -sh`
- ./diagram_generation.sh ttHtoGG_tutorial addons/models/SMEFTsim_U35_MwScheme_UFO/ttHtoGG_tutorial/
+ ./diagram_generation.sh ttHtoGG_tutorial addons/models/SMEFTsim_topU3l_MwScheme_UFO/ttHtoGG_tutorial/
 ```
 
 To run locally,
 ```bash
-./gridpack_generation.sh ttHtoGG_tutorial addons/models/SMEFTsim_U35_MwScheme_UFO/ttHtoGG_tutorial
+./gridpack_generation.sh ttHtoGG_tutorial addons/models/SMEFTsim_topU3l_MwScheme_UFO/ttHtoGG_tutorial
 ```
 
 <details>
@@ -81,7 +81,7 @@ To run locally,
 Condor gridpack generation works for lxplus (and LPC?) but may not work at your local cluster, depending on your cluster's batch setup. You could use CMS connect as well (link)
 
 ```bash
-nohup ./submit_cmsconnect_gridpack_generation.sh ttHtoGG_tutorial addons/cards/SMEFTsim_U35_MwScheme_UFO/ttHtoGG_tutorial > ttHtoGG_tutorial.log
+nohup ./submit_cmsconnect_gridpack_generation.sh ttHtoGG_tutorial addons/cards/SMEFTsim_topU3l_MwScheme_UFO/ttHtoGG_tutorial > ttHtoGG_tutorial.log
 ```
 </details>
 
