@@ -66,9 +66,9 @@ cp $TUTORIALGEN/ttHtoGG* ttHtoGG_tutorial/
 ```
 Let's take a look at some diagrams
 ```bash
- cd $TUTORIALGEN/genproductions/bin/MadGraph5_aMCatNLO/
- eval `scram unsetenv -sh`
- ./diagram_generation.sh ttHtoGG_tutorial addons/models/SMEFTsim_topU3l_MwScheme_UFO/ttHtoGG_tutorial/
+cd $TUTORIALGEN/genproductions/bin/MadGraph5_aMCatNLO/
+eval `scram unsetenv -sh`
+./diagram_generation.sh ttHtoGG_tutorial addons/models/SMEFTsim_topU3l_MwScheme_UFO/ttHtoGG_tutorial/
 ```
 
 To run locally,
